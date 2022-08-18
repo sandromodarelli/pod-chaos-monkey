@@ -23,31 +23,24 @@ logger.debug("NAMESPACE: %s", NAMESPACE)
 logger.debug("LOGLEVEL: %s", LOGLEVEL)
 logger.debug("SLEEP: %s", SLEEP)
 
-# Configs can be set in Configuration class directly or using helper utility
-try:
-    config.load_incluster_config()
-except ConfigException as e:
-    logger.error(e)
-    sys.exit(1)
 
-v1 = client.CoreV1Api()
-
-
-def list_pods(namespace: str) -> dict:
+def list_pods(api, namespace: str) -> dict:
     """
     List pods in a single namespace
+    :param api: versioned kubernetes api
     :param namespace: a kubernetes namespace name
     :return: list of pods
     """
     logger.info("Retrieving pods in %s namespace", namespace)
-    pod_list = v1.list_namespaced_pod(NAMESPACE, watch=False).items
+    pod_list = api.list_namespaced_pod(NAMESPACE, watch=False).items
     logging.debug(pod_list)
     return pod_list
 
 
-def delete_random_pod(pod_list: dict):
+def delete_random_pod(api, pod_list: dict):
     """
     Deletes a random chosen pod from the input list
+    :param api: versioned kubernetes api
     :param pod_list: pod list
     :return: None
     """
@@ -56,15 +49,16 @@ def delete_random_pod(pod_list: dict):
 
         # Deleting the selected pod
         logger.info("Deleting pod %s", pod.metadata.name)
-        v1.delete_namespaced_pod(
+        return api.delete_namespaced_pod(
             name=pod.metadata.name,
             namespace=pod.metadata.namespace
         )
     else:
         logger.info("No pods in %s namespace", NAMESPACE)
+        return None
 
 
-def main(namespace):
+def main(namespace, sleep):
     """
     Delete a random pod from a selected namespace
 
@@ -73,15 +67,25 @@ def main(namespace):
     :return: None
 
     """
+    # Configs can be set in Configuration class directly or using helper utility
+    try:
+        config.load_incluster_config()
+        # config.load_kube_config() # use this for local debugging
+    except ConfigException as e:
+        logger.error(e)
+        sys.exit(1)
+
+    v1 = client.CoreV1Api()
+
     while True:
-        pods = list_pods(namespace)
-        delete_random_pod(pods)
+        pods = list_pods(v1, namespace)
+        deleted_pod = delete_random_pod(v1, pods)
 
         # Sleep to next round, if 0 stop running
-        if SLEEP == 0:
+        if sleep == 0:
             break
-        time.sleep(SLEEP)
+        time.sleep(sleep)
 
 
 if __name__ == '__main__':
-    main(NAMESPACE)
+    main(NAMESPACE, SLEEP)
