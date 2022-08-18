@@ -33,7 +33,7 @@ except ConfigException as e:
 v1 = client.CoreV1Api()
 
 
-def _list_pods(namespace: str) -> dict:
+def list_pods(namespace: str) -> dict:
     """
     List pods in a single namespace
     :param namespace: a kubernetes namespace name
@@ -45,7 +45,7 @@ def _list_pods(namespace: str) -> dict:
     return pod_list
 
 
-def _delete_random_pod(pod_list: dict):
+def delete_random_pod(pod_list: dict):
     """
     Deletes a random chosen pod from the input list
     :param pod_list: pod list
@@ -74,8 +74,8 @@ def main(namespace):
 
     """
     while True:
-        pods = _list_pods(namespace)
-        _delete_random_pod(pods)
+        pods = list_pods(namespace)
+        delete_random_pod(pods)
 
         # Sleep to next round, if 0 stop running
         if SLEEP == 0:
