@@ -1,0 +1,31 @@
+{{- if .Values.rbac.create -}}
+
+# Roles
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRole
+metadata:
+  name: {{ include "pod-chaos-mokey.fullname" . }}
+  labels:
+    {{- include "pod-chaos-mokey.labels" . | nindent 4 }}
+rules:
+- apiGroups: [""]
+  resources: ["pods"]
+  verbs: ["get", "list", "watch", "delete"]
+---
+
+## Role bindings
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRoleBinding
+metadata:
+  name: {{ include "pod-chaos-mokey.fullname" . }}
+  labels:
+    {{- include "pod-chaos-mokey.labels" . | nindent 4 }}
+subjects:
+- kind: ServiceAccount
+  name: {{ include "pod-chaos-mokey.serviceAccountName" . }}
+  namespace: {{ .Release.Namespace }}
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: ClusterRole
+  name: {{ include "pod-chaos-mokey.fullname" . }}
+{{- end -}}
