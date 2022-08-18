@@ -1,0 +1,10 @@
+image:
+  repository: pod-chaos-monkey
+  pullPolicy: IfNotPresent
+  # Overrides the image tag whose default is the chart appVersion.
+  tag: "latest"
+
+args:
+  namespace: "workloads"
+  sleep: "5"
+  loglevel: "info"
