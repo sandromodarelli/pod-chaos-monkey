@@ -29,7 +29,7 @@ Here's the main application options:
 | args.namespace | string | `"workloads"` | watched namespace                |
 | args.sleep | string | `"30"` | sleep time between pod deletions |
 
-# Run tests
+## Run tests
 
 * Install **pytest** in your virtualenv with `pip install pytest`
 * Run tests with `PYTHONPATH=./app pytest` 
