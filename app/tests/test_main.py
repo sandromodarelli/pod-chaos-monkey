@@ -16,15 +16,15 @@ def test_list_pods(api, namespace):
     :return:
     """
     pod1 = MagicMock()
-    pod1.metadata.name = "my-app-1"
+    pod1.metadata.name = "pod-1"
     pod1.metadata.namespace = namespace
 
     pod2 = MagicMock()
-    pod2.metadata.name = "my-app-2"
+    pod2.metadata.name = "pod-2"
     pod2.metadata.namespace = namespace
 
     pod3 = MagicMock()
-    pod3.metadata.name = "my-app-3"
+    pod3.metadata.name = "pod-3"
     pod3.metadata.namespace = namespace
 
     items = [pod1, pod2, pod3]
@@ -48,15 +48,15 @@ def test_delete_random_pod(api, namespace, choice_mock):
     :return:
     """
     pod1 = MagicMock()
-    pod1.metadata.name = "my-app-1"
+    pod1.metadata.name = "pod-1"
     pod1.metadata.namespace = namespace
 
     pod2 = MagicMock()
-    pod2.metadata.name = "my-app-2"
+    pod2.metadata.name = "pod-2"
     pod2.metadata.namespace = namespace
 
     pod3 = MagicMock()
-    pod3.metadata.name = "my-app-3"
+    pod3.metadata.name = "pod-3"
     pod3.metadata.namespace = namespace
 
     items = [pod1, pod2, pod3]
