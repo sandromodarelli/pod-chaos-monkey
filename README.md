@@ -1,3 +1,5 @@
+![pylint Score](https://mperlet.github.io/pybadge/badges/10.svg)
+
 # Pod Chaos Monkey
 Deletes a randomly chosen pod from a kubernetes cluster's namespace
 
