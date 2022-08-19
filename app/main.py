@@ -53,9 +53,9 @@ def delete_random_pod(api, pod_list: dict):
             name=pod.metadata.name,
             namespace=pod.metadata.namespace
         )
-    else:
-        logger.info("No pods in %s namespace", NAMESPACE)
-        return None
+
+    logger.info("No pods in %s namespace", NAMESPACE)
+    return None
 
 
 def main(namespace, sleep):
@@ -71,15 +71,15 @@ def main(namespace, sleep):
     try:
         config.load_incluster_config()
         # config.load_kube_config() # use this for local debugging
-    except ConfigException as e:
-        logger.error(e)
+    except ConfigException as err:
+        logger.error(err)
         sys.exit(1)
 
-    v1 = client.CoreV1Api()
+    v1api = client.CoreV1Api()
 
     while True:
-        pods = list_pods(v1, namespace)
-        deleted_pod = delete_random_pod(v1, pods)
+        pods = list_pods(v1api, namespace)
+        _ = delete_random_pod(v1api, pods)
 
         # Sleep to next round, if 0 stop running
         if sleep == 0:
