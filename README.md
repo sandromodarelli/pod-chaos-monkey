@@ -31,7 +31,16 @@ Here's the main application options:
 | args.namespace | string | `"workloads"` | watched namespace                |
 | args.sleep | string | `"30"` | sleep time between pod deletions |
 
-## Run tests
+## Run tests and linter
 
+### Tests
 * Install **pytest** in your virtualenv with `pip install pytest`
 * Run tests with `PYTHONPATH=./app pytest` 
+
+### Linter
+* nstall **pylint** in your virtualenv with `pip install pylint`
+* Run linter with `PYTHONPATH=./app pylint app`
+
+## Future Improvements
+1. run test and linter in CI
+2. add a **kubernetes event** every time the monkey deletes a pod
